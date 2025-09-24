@@ -69,7 +69,7 @@ export const ProcessInputAndControls: React.FC = () => {
         Entrada de Procesos y Simulación
       </h2>
 
-      <div className="space-y-4">
+      <div className="space-y-12">
         {/* Process Input Section */}
         <div className="border-b border-neutral-200 pb-4">
           <h3 className="text-sm font-medium text-neutral-700 mb-3">

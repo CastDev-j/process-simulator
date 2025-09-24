@@ -65,15 +65,21 @@ export const ProcessStateTable: React.FC = () => {
             Estado de Procesos
           </h2>
         </div>
-        <div className="text-center py-4 text-neutral-500">
-          <div className="text-sm">No hay procesos para mostrar</div>
+        <div className="text-center py-8 text-neutral-500 min-h-60 flex flex-col items-center justify-center gap-3">
+          <MdTableChart size={48} className="text-neutral-300" />
+          <div className="text-sm font-medium">
+            No hay procesos para mostrar
+          </div>
+          <div className="text-xs text-neutral-400">
+            Los procesos aparecerán aquí cuando se agreguen
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg border border-neutral-200 p-4 shadow-sm">
+    <div className="bg-white rounded-lg border border-neutral-200 p-4 shadow-sm ">
       <div className="flex items-center gap-2 mb-3">
         <MdTableChart className="h-4 w-4 text-neutral-600" />
         <h2 className="text-lg font-semibold text-neutral-900">
@@ -81,7 +87,7 @@ export const ProcessStateTable: React.FC = () => {
         </h2>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto min-h-60">
         <table className="w-full border-collapse text-xs">
           <thead>
             <tr className="border-b border-neutral-200">

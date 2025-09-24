@@ -56,9 +56,14 @@ export const SimulationDisplay: React.FC = () => {
                 </div>
               </div>
             ) : (
-              <div className="text-neutral-500 text-center">
-                <MdPause size={20} className="mx-auto mb-1 text-neutral-400" />
-                <div className="text-xs">Inactivo</div>
+              <div className="text-center">
+                <div className="bg-neutral-100 rounded-full w-fit mx-auto">
+                  <MdPause size={24} className="text-neutral-400" />
+                </div>
+                <div className="text-sm font-medium text-neutral-500 mb-1">
+                  Inactivo
+                </div>
+                <div className="text-xs text-neutral-400">Sin procesos</div>
               </div>
             )}
           </div>
@@ -89,9 +94,16 @@ export const SimulationDisplay: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-neutral-500 text-center h-full flex flex-col justify-center">
-                <MdList size={20} className="mx-auto mb-1 text-neutral-400" />
-                <div className="text-xs">Vacía</div>
+              <div className="text-center h-full flex flex-col justify-center">
+                <div className="bg-neutral-100 rounded-full w-fit mx-auto">
+                  <MdList size={24} className="text-neutral-400" />
+                </div>
+                <div className="text-sm font-medium text-neutral-500 mb-1">
+                  Cola vacía
+                </div>
+                <div className="text-xs text-neutral-400">
+                  No hay procesos esperando
+                </div>
               </div>
             )}
           </div>
@@ -117,7 +129,7 @@ export const SimulationDisplay: React.FC = () => {
                 .map((process, index) => (
                   <div
                     key={process.pid}
-                    className="flex justify-between items-center bg-white rounded px-2 py-1 border border-neutral-200 text-xs"
+                    className="flex justify-between items-center bg-white rounded p-2 border border-neutral-200 text-xs h-fit"
                   >
                     <div className="flex items-center gap-1">
                       <span className="text-xs bg-neutral-200 text-neutral-700 px-1 rounded">
@@ -132,9 +144,16 @@ export const SimulationDisplay: React.FC = () => {
                 ))}
             </div>
           ) : (
-            <div className="text-neutral-500 text-center py-4 min-h-16">
-              <MdDone size={20} className="mx-auto mb-1 text-neutral-400" />
-              <div className="text-xs">Sin completar</div>
+            <div className="text-center h-full flex flex-col justify-center">
+              <div className="bg-neutral-100  rounded-full w-fit mx-auto">
+                <MdDone size={24} className="text-neutral-400" />
+              </div>
+              <div className="text-sm font-medium text-neutral-500 mb-1">
+                Sin completar
+              </div>
+              <div className="text-xs text-neutral-400">
+                Los procesos terminados aparecerán aquí
+              </div>
             </div>
           )}
         </div>
