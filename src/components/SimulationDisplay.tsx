@@ -119,7 +119,7 @@ export const SimulationDisplay: React.FC = () => {
           </h3>
         </div>
 
-        <div className="bg-neutral-50 rounded p-3 border border-neutral-200 h-[100px]">
+        <div className="bg-neutral-50 rounded p-3 border border-neutral-200 sm:h-[100px] h-fit">
           {completedProcesses.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 h-full overflow-y-auto">
               {completedProcesses
