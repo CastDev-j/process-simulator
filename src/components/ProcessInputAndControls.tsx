@@ -131,7 +131,7 @@ export const ProcessInputAndControls: React.FC = () => {
                 <textarea
                   value={textInput}
                   onChange={(e) => setTextInput(e.target.value)}
-                  placeholder="Formato: 'pid' 'llegada' 'duración' (separado por espacios)"
+                  placeholder="Formato: 'pid' 'llegada' 'duración' (separado por espacios ó comas)"
                   className="w-full h-24 p-2 border border-neutral-300 rounded text-xs font-mono resize-none"
                 />
                 <div className="flex justify-end gap-2">
