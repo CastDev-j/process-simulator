@@ -169,7 +169,11 @@ export const useSchedulerStore = create<SchedulerState>((set, get) => ({
     const processes: Process[] = [];
 
     lines.forEach((line, index) => {
-      const parts = line.trim().split(/\s+/);
+      // Split by spaces, commas, or tabs for flexibility
+      const parts = line
+        .trim()
+        .split(/[\s,]+/)
+        .filter((part) => part.trim());
       if (parts.length >= 3) {
         const pid = parseInt(parts[0]) || index + 1;
         const arrivalTime = Math.max(1, parseInt(parts[1]) || 1); // Mínimo 1

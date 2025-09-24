@@ -121,7 +121,7 @@ export const ProcessInputAndControls: React.FC = () => {
                 onClick={() => setShowManual(!showManual)}
                 className="px-3 py-1 bg-neutral-100 border border-neutral-300 rounded hover:bg-neutral-200 text-xs"
               >
-                {showManual ? "Ocultar" : "Manual"}
+                {showManual ? "Ocultar" : "Entrada Manual"}
               </button>
             </div>
 
@@ -131,7 +131,7 @@ export const ProcessInputAndControls: React.FC = () => {
                 <textarea
                   value={textInput}
                   onChange={(e) => setTextInput(e.target.value)}
-                  placeholder="Formato: pid,llegada,duración (una línea por proceso)&#10;Ejemplo:&#10;1,0,5&#10;2,1,3&#10;3,2,8"
+                  placeholder="Formato: 'pid' 'llegada' 'duración' (separado por espacios)"
                   className="w-full h-24 p-2 border border-neutral-300 rounded text-xs font-mono resize-none"
                 />
                 <div className="flex justify-end gap-2">
