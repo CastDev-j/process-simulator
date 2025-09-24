@@ -35,7 +35,7 @@ export const ProcessStateTable: React.FC = () => {
       case "running":
         return "bg-green-100 text-green-800";
       case "completed":
-        return "bg-gray-100 text-gray-800";
+        return "bg-neutral-100 text-neutral-800";
       default:
         return "bg-red-100 text-red-800";
     }
@@ -62,7 +62,7 @@ export const ProcessStateTable: React.FC = () => {
         <div className="flex items-center gap-2 mb-3">
           <MdTableChart className="h-4 w-4 text-neutral-600" />
           <h2 className="text-lg font-semibold text-neutral-900">
-            Estado de Procesos (Tick {currentTick})
+            Estado de Procesos
           </h2>
         </div>
         <div className="text-center py-4 text-neutral-500">
@@ -110,7 +110,7 @@ export const ProcessStateTable: React.FC = () => {
               const executed = process.duration - process.remainingTime;
               const progress =
                 process.duration > 0 ? (executed / process.duration) * 100 : 0;
-              const progressClamped = Math.max(0, Math.min(100, progress)); // Asegurar que esté entre 0-100
+              const progressClamped = Math.max(0, Math.min(100, progress));
 
               return (
                 <tr
@@ -132,14 +132,14 @@ export const ProcessStateTable: React.FC = () => {
                   <td className="p-2">{process.duration}</td>
                   <td className="p-2">{process.remainingTime}</td>
                   <td className="p-2">
-                    <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
+                    <div className="w-full bg-neutral-200 rounded-full h-2 mb-1">
                       <div
                         className={`h-2 rounded-full transition-all duration-500 ${
                           process.state === "completed"
                             ? "bg-green-500"
                             : process.state === "running"
                             ? "bg-blue-500"
-                            : "bg-gray-400"
+                            : "bg-neutral-400"
                         }`}
                         style={{ width: `${progressClamped}%` }}
                       />

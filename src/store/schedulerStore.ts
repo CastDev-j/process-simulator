@@ -141,7 +141,7 @@ export const useSchedulerStore = create<SchedulerState>((set, get) => ({
       .map((line, index) => {
         const [pid, arrivalTime, duration] = line
           .trim()
-          .split(/[\s,]+/)
+          .split(/[\s,]+/) // " "-","
           .filter((part) => part.trim())
           .map(Number);
 

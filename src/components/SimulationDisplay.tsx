@@ -38,14 +38,15 @@ export const SimulationDisplay: React.FC = () => {
             <h3 className="font-medium text-neutral-900 text-sm">CPU</h3>
           </div>
 
-          <div className="bg-neutral-50 rounded p-3 min-h-[80px] flex items-center justify-center border border-neutral-200">
+          <div className="bg-neutral-50 rounded p-3 h-[100px] flex items-center justify-center border border-neutral-200">
             {currentProcess ? (
               <div className="text-center">
                 <div className="text-sm font-bold text-neutral-800">
                   P{currentProcess.pid}
                 </div>
                 <div className="text-xs text-neutral-600">
-                  Restante: {currentProcess.remainingTime}
+                  Restante: {currentProcess.remainingTime} /{" "}
+                  {currentProcess.duration}
                 </div>
                 <div className="mt-1">
                   <span className="inline-flex items-center gap-1 px-2 py-1 bg-neutral-200 text-neutral-700 rounded text-xs">
@@ -72,10 +73,10 @@ export const SimulationDisplay: React.FC = () => {
             </h3>
           </div>
 
-          <div className="bg-neutral-50 rounded p-3 min-h-[80px] border border-neutral-200">
+          <div className="bg-neutral-50 rounded p-3 h-[100px] border border-neutral-200">
             {readyQueue.length > 0 ? (
-              <div className="space-y-1 max-h-16 overflow-y-auto">
-                {readyQueue.slice(0, 3).map((process) => (
+              <div className="space-y-1 h-full overflow-y-auto">
+                {readyQueue.map((process) => (
                   <div
                     key={process.pid}
                     className="flex justify-between items-center bg-white rounded px-2 py-1 border border-neutral-200 text-xs"
@@ -86,11 +87,6 @@ export const SimulationDisplay: React.FC = () => {
                     </span>
                   </div>
                 ))}
-                {readyQueue.length > 3 && (
-                  <div className="text-xs text-neutral-500 text-center">
-                    +{readyQueue.length - 3} más
-                  </div>
-                )}
               </div>
             ) : (
               <div className="text-neutral-500 text-center h-full flex flex-col justify-center">
@@ -111,9 +107,9 @@ export const SimulationDisplay: React.FC = () => {
           </h3>
         </div>
 
-        <div className="bg-neutral-50 rounded p-3 border border-neutral-200 min-h-24">
+        <div className="bg-neutral-50 rounded p-3 border border-neutral-200 h-[100px]">
           {completedProcesses.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 h-full overflow-y-auto">
               {completedProcesses
                 .sort(
                   (a, b) => (a.completionTime || 0) - (b.completionTime || 0)

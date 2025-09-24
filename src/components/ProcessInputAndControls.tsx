@@ -48,10 +48,10 @@ export const ProcessInputAndControls: React.FC = () => {
   };
 
   const algorithms: { value: SchedulingAlgorithm; label: string }[] = [
-    { value: "FIFO", label: "FIFO" },
-    { value: "LIFO", label: "LIFO" },
-    { value: "SJF", label: "SJF" },
-    { value: "LJF", label: "LJF" },
+    { value: "FIFO", label: "FIFO (First In, First Out)" },
+    { value: "LIFO", label: "LIFO (Last In, First Out)" },
+    { value: "SJF", label: "SJF (Shortest Job First)" },
+    { value: "LJF", label: "LJF (Longest Job First)" },
   ];
 
   const allProcessesCompleted =
@@ -176,9 +176,9 @@ export const ProcessInputAndControls: React.FC = () => {
                   }
                   className="w-full p-2 border border-neutral-300 rounded text-xs"
                 >
-                  {algorithms.map((algo) => (
-                    <option key={algo.value} value={algo.value}>
-                      {algo.label}
+                  {algorithms.map((algorithm) => (
+                    <option key={algorithm.value} value={algorithm.value}>
+                      {algorithm.label}
                     </option>
                   ))}
                 </select>
