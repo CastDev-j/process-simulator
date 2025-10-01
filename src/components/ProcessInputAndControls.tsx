@@ -64,15 +64,15 @@ export const ProcessInputAndControls: React.FC = () => {
   const canGoPrevious = currentTick > 0;
 
   return (
-    <div className="bg-white rounded-lg border border-neutral-200 p-4 shadow-sm">
-      <h2 className="text-lg font-semibold text-neutral-900 mb-3">
+    <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+      <h2 className="text-lg font-semibold text-gray-900 mb-3">
         Entrada de Procesos y Simulación
       </h2>
 
       <div className="space-y-12">
         {/* Process Input Section */}
-        <div className="border-b border-neutral-200 pb-4">
-          <h3 className="text-sm font-medium text-neutral-700 mb-3">
+        <div className="border-b border-gray-200 pb-4">
+          <h3 className="text-sm font-medium text-gray-700 mb-3">
             Entrada de Procesos
           </h3>
 
@@ -81,20 +81,18 @@ export const ProcessInputAndControls: React.FC = () => {
             <div className="flex flex-wrap items-center gap-3 text-sm">
               {/* Random Generation */}
               <div className="flex items-center gap-2">
-                <label className="font-medium text-neutral-700">
-                  Aleatorio:
-                </label>
+                <label className="font-medium text-gray-700">Aleatorio:</label>
                 <input
                   type="number"
                   value={processCount}
                   onChange={(e) => setProcessCount(Number(e.target.value))}
                   min={1}
                   max={20}
-                  className="w-16 px-2 py-1 border border-neutral-300 rounded text-center text-xs"
+                  className="w-16 px-2 py-1 border border-gray-300 rounded text-center text-xs"
                 />
                 <button
                   onClick={() => generateRandomProcesses(processCount)}
-                  className="flex items-center gap-1 px-3 py-1 bg-neutral-600 text-white rounded hover:bg-neutral-700 text-xs"
+                  className="flex items-center gap-1 px-3 py-1 bg-gray-600 text-white rounded hover:bg-gray-700 text-xs"
                 >
                   <MdShuffle size={14} />
                   Generar
@@ -103,8 +101,8 @@ export const ProcessInputAndControls: React.FC = () => {
 
               {/* File Upload */}
               <div className="flex items-center gap-2">
-                <label className="font-medium text-neutral-700">Archivo:</label>
-                <label className="flex items-center gap-1 px-3 py-1 bg-neutral-100 border border-neutral-300 rounded cursor-pointer hover:bg-neutral-200 text-xs">
+                <label className="font-medium text-gray-700">Archivo:</label>
+                <label className="flex items-center gap-1 px-3 py-1 bg-gray-100 border border-gray-300 rounded cursor-pointer hover:bg-gray-200 text-xs">
                   <MdFileUpload size={14} />
                   Cargar
                   <input
@@ -119,7 +117,7 @@ export const ProcessInputAndControls: React.FC = () => {
               {/* Manual Input Toggle */}
               <button
                 onClick={() => setShowManual(!showManual)}
-                className="px-3 py-1 bg-neutral-100 border border-neutral-300 rounded hover:bg-neutral-200 text-xs"
+                className="px-3 py-1 bg-gray-100 border border-gray-300 rounded hover:bg-gray-200 text-xs"
               >
                 {showManual ? "Ocultar" : "Entrada Manual"}
               </button>
@@ -132,7 +130,7 @@ export const ProcessInputAndControls: React.FC = () => {
                   value={textInput}
                   onChange={(e) => setTextInput(e.target.value)}
                   placeholder="Formato: 'pid' 'llegada' 'duración' (separado por espacios ó comas)"
-                  className="w-full h-24 p-2 border border-neutral-300 rounded text-xs font-mono resize-none"
+                  className="w-full h-24 p-2 border border-gray-300 rounded text-xs font-mono resize-none"
                 />
                 <div className="flex justify-end gap-2">
                   <button
@@ -140,13 +138,13 @@ export const ProcessInputAndControls: React.FC = () => {
                       setTextInput("");
                       setShowManual(false);
                     }}
-                    className="px-3 py-1 text-neutral-600 hover:bg-neutral-100 rounded text-xs"
+                    className="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded text-xs"
                   >
                     Cancelar
                   </button>
                   <button
                     onClick={handleTextSubmit}
-                    className="px-3 py-1 bg-neutral-600 text-white rounded hover:bg-neutral-700 text-xs"
+                    className="px-3 py-1 bg-gray-600 text-white rounded hover:bg-gray-700 text-xs"
                   >
                     Aplicar
                   </button>
@@ -158,7 +156,7 @@ export const ProcessInputAndControls: React.FC = () => {
 
         {/* Simulation Controls Section */}
         <div>
-          <h3 className="text-sm font-medium text-neutral-700 mb-3">
+          <h3 className="text-sm font-medium text-gray-700 mb-3">
             Control de Simulación
           </h3>
 
@@ -166,7 +164,7 @@ export const ProcessInputAndControls: React.FC = () => {
             {/* Algorithm and Tick in one row */}
             <div className="flex items-center gap-4">
               <div className="flex-1">
-                <label className="block text-xs font-medium text-neutral-700 mb-1">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
                   Algoritmo:
                 </label>
                 <select
@@ -174,7 +172,7 @@ export const ProcessInputAndControls: React.FC = () => {
                   onChange={(e) =>
                     setAlgorithm(e.target.value as SchedulingAlgorithm)
                   }
-                  className="w-full p-2 border border-neutral-300 rounded text-xs"
+                  className="w-full p-2 border border-gray-300 rounded text-xs"
                 >
                   {algorithms.map((algorithm) => (
                     <option key={algorithm.value} value={algorithm.value}>
@@ -185,10 +183,10 @@ export const ProcessInputAndControls: React.FC = () => {
               </div>
 
               <div className="text-center">
-                <div className="text-xs font-medium text-neutral-700 mb-1">
+                <div className="text-xs font-medium text-gray-700 mb-1">
                   Tick Actual
                 </div>
-                <div className="bg-neutral-100 border border-neutral-300 rounded px-3 py-2 font-mono text-sm font-bold text-neutral-800">
+                <div className="bg-gray-100 border border-gray-300 rounded px-3 py-2 font-mono text-sm font-bold text-gray-800">
                   {currentTick}
                 </div>
               </div>
@@ -201,8 +199,8 @@ export const ProcessInputAndControls: React.FC = () => {
                 disabled={!canGoPrevious}
                 className={`flex items-center gap-1 px-3 py-2 rounded text-xs font-medium ${
                   canGoPrevious
-                    ? "bg-neutral-600 text-white hover:bg-neutral-700"
-                    : "bg-neutral-200 text-neutral-500 cursor-not-allowed"
+                    ? "bg-gray-600 text-white hover:bg-gray-700"
+                    : "bg-gray-200 text-gray-500 cursor-not-allowed"
                 }`}
               >
                 <MdSkipPrevious size={16} />
@@ -214,8 +212,8 @@ export const ProcessInputAndControls: React.FC = () => {
                 disabled={!canGoNext}
                 className={`flex items-center gap-1 px-3 py-2 rounded text-xs font-medium ${
                   canGoNext
-                    ? "bg-neutral-600 text-white hover:bg-neutral-700"
-                    : "bg-neutral-200 text-neutral-500 cursor-not-allowed"
+                    ? "bg-gray-600 text-white hover:bg-gray-700"
+                    : "bg-gray-200 text-gray-500 cursor-not-allowed"
                 }`}
               >
                 Siguiente

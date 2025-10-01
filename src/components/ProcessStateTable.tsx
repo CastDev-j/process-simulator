@@ -35,7 +35,7 @@ export const ProcessStateTable: React.FC = () => {
       case "running":
         return "bg-green-100 text-green-800";
       case "completed":
-        return "bg-neutral-100 text-neutral-800";
+        return "bg-gray-100 text-gray-800";
       default:
         return "bg-red-100 text-red-800";
     }
@@ -58,19 +58,19 @@ export const ProcessStateTable: React.FC = () => {
 
   if (processes.length === 0) {
     return (
-      <div className="bg-white rounded-lg border border-neutral-200 p-4 shadow-sm">
+      <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
         <div className="flex items-center gap-2 mb-3">
-          <MdTableChart className="h-4 w-4 text-neutral-600" />
-          <h2 className="text-lg font-semibold text-neutral-900">
+          <MdTableChart className="h-4 w-4 text-gray-600" />
+          <h2 className="text-lg font-semibold text-gray-900">
             Estado de Procesos
           </h2>
         </div>
-        <div className="text-center py-8 text-neutral-500 min-h-60 flex flex-col items-center justify-center gap-3">
-          <MdTableChart size={48} className="text-neutral-300" />
+        <div className="text-center py-8 text-gray-500 min-h-60 flex flex-col items-center justify-center gap-3">
+          <MdTableChart size={48} className="text-gray-300" />
           <div className="text-sm font-medium">
             No hay procesos para mostrar
           </div>
-          <div className="text-xs text-neutral-400">
+          <div className="text-xs text-gray-400">
             Los procesos aparecerán aquí cuando se agreguen
           </div>
         </div>
@@ -79,10 +79,10 @@ export const ProcessStateTable: React.FC = () => {
   }
 
   return (
-    <div className="bg-white rounded-lg border border-neutral-200 p-4 shadow-sm ">
+    <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm ">
       <div className="flex items-center gap-2 mb-3">
-        <MdTableChart className="h-4 w-4 text-neutral-600" />
-        <h2 className="text-lg font-semibold text-neutral-900">
+        <MdTableChart className="h-4 w-4 text-gray-600" />
+        <h2 className="text-lg font-semibold text-gray-900">
           Estado de Procesos (Tick {currentTick})
         </h2>
       </div>
@@ -90,23 +90,21 @@ export const ProcessStateTable: React.FC = () => {
       <div className="overflow-x-auto min-h-60">
         <table className="w-full border-collapse text-xs">
           <thead>
-            <tr className="border-b border-neutral-200">
-              <th className="text-left p-2 font-medium text-neutral-900">
-                PID
-              </th>
-              <th className="text-left p-2 font-medium text-neutral-900">
+            <tr className="border-b border-gray-200">
+              <th className="text-left p-2 font-medium text-gray-900">PID</th>
+              <th className="text-left p-2 font-medium text-gray-900">
                 Estado
               </th>
-              <th className="text-left p-2 font-medium text-neutral-900">
+              <th className="text-left p-2 font-medium text-gray-900">
                 Llegada
               </th>
-              <th className="text-left p-2 font-medium text-neutral-900">
+              <th className="text-left p-2 font-medium text-gray-900">
                 Duración
               </th>
-              <th className="text-left p-2 font-medium text-neutral-900">
+              <th className="text-left p-2 font-medium text-gray-900">
                 Restante
               </th>
-              <th className="text-left p-2 font-medium text-neutral-900">
+              <th className="text-left p-2 font-medium text-gray-900">
                 Progreso
               </th>
             </tr>
@@ -121,7 +119,7 @@ export const ProcessStateTable: React.FC = () => {
               return (
                 <tr
                   key={process.pid}
-                  className="border-b border-neutral-100 hover:bg-neutral-50"
+                  className="border-b border-gray-100 hover:bg-gray-50"
                 >
                   <td className="p-2 font-medium">P{process.pid}</td>
                   <td className="p-2">
@@ -138,19 +136,19 @@ export const ProcessStateTable: React.FC = () => {
                   <td className="p-2">{process.duration}</td>
                   <td className="p-2">{process.remainingTime}</td>
                   <td className="p-2">
-                    <div className="w-full bg-neutral-200 rounded-full h-2 mb-1">
+                    <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
                       <div
                         className={`h-2 rounded-full transition-all duration-500 ${
                           process.state === "completed"
                             ? "bg-green-500"
                             : process.state === "running"
                             ? "bg-blue-500"
-                            : "bg-neutral-400"
+                            : "bg-gray-400"
                         }`}
                         style={{ width: `${progressClamped}%` }}
                       />
                     </div>
-                    <div className="flex justify-between text-xs text-neutral-600">
+                    <div className="flex justify-between text-xs text-gray-600">
                       <span>
                         {executed}/{process.duration}
                       </span>
