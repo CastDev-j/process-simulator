@@ -122,8 +122,8 @@ export const SimulationDisplay: React.FC = () => {
         </div>
       </div>
 
-      {/* Bloqueados - Solo visible si hay procesos bloqueados */}
-      {blockedProcesses.length > 0 && (
+      {/* Bloqueados - Visible si es RR_LIFO (siempre) o si hay procesos bloqueados */}
+      {(isRoundRobin || blockedProcesses.length > 0) && (
         <div className="mb-4">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -132,20 +132,34 @@ export const SimulationDisplay: React.FC = () => {
                 Bloqueados ({blockedProcesses.length})
               </h3>
             </div>
-            <div className="bg-red-50 rounded p-3 border border-red-200">
-              <div className="flex flex-wrap gap-2">
-                {blockedProcesses.map((process) => (
-                  <div
-                    key={process.pid}
-                    className="flex justify-between items-center bg-white rounded px-2 py-1 border border-red-300 text-xs"
-                  >
-                    <span className="font-medium">P{process.pid}</span>
-                    <span className="text-gray-600 ml-2">
-                      T:{process.remainingTime}
-                    </span>
+            <div className="bg-red-50 rounded p-3 border border-red-200 h-[100px]">
+              {blockedProcesses.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {blockedProcesses.map((process) => (
+                    <div
+                      key={process.pid}
+                      className="flex justify-between items-center bg-white rounded px-2 py-1 border border-red-300 text-xs"
+                    >
+                      <span className="font-medium">P{process.pid}</span>
+                      <span className="text-gray-600 ml-2">
+                        T:{process.remainingTime}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center flex flex-col justify-center h-[100px]">
+                  <div className="rounded-full w-fit mx-auto">
+                    <MdBlock size={24} className="text-red-400" />
                   </div>
-                ))}
-              </div>
+                  <div className="text-sm font-medium text-red-500 mb-1">
+                    Sin bloqueados
+                  </div>
+                  <div className="text-xs text-red-400">
+                    Los procesos bloqueados aparecerán aquí
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
