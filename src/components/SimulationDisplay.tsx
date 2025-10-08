@@ -6,6 +6,7 @@ import {
   MdPause,
   MdList,
   MdDone,
+  MdBlock,
 } from "react-icons/md";
 import { useSchedulerStore } from "../store/schedulerStore";
 
@@ -15,8 +16,12 @@ export const SimulationDisplay: React.FC = () => {
     currentProcess,
     readyQueue,
     completedProcesses,
+    blockedProcesses,
     algorithm,
+    quantum,
   } = useSchedulerStore();
+
+  const isRoundRobin = algorithm === "RR_LIFO";
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
@@ -26,6 +31,7 @@ export const SimulationDisplay: React.FC = () => {
         </h2>
         <span className="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded">
           {algorithm} | Tick {currentTick}
+          {isRoundRobin && ` | Q=${quantum}`}
         </span>
       </div>
 
@@ -48,6 +54,12 @@ export const SimulationDisplay: React.FC = () => {
                   Restante: {currentProcess.remainingTime} /{" "}
                   {currentProcess.duration}
                 </div>
+                {isRoundRobin &&
+                  currentProcess.quantumRemaining !== undefined && (
+                    <div className="text-xs text-blue-600 font-medium">
+                      Quantum: {currentProcess.quantumRemaining}
+                    </div>
+                  )}
                 <div className="mt-1">
                   <span className="inline-flex items-center gap-1 px-2 py-1 bg-gray-200 text-gray-700 rounded text-xs">
                     <MdPlayArrow size={10} />
@@ -109,6 +121,35 @@ export const SimulationDisplay: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Bloqueados - Solo visible si hay procesos bloqueados */}
+      {blockedProcesses.length > 0 && (
+        <div className="mb-4">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <MdBlock className="text-red-600" size={16} />
+              <h3 className="font-medium text-gray-900 text-sm">
+                Bloqueados ({blockedProcesses.length})
+              </h3>
+            </div>
+            <div className="bg-red-50 rounded p-3 border border-red-200">
+              <div className="flex flex-wrap gap-2">
+                {blockedProcesses.map((process) => (
+                  <div
+                    key={process.pid}
+                    className="flex justify-between items-center bg-white rounded px-2 py-1 border border-red-300 text-xs"
+                  >
+                    <span className="font-medium">P{process.pid}</span>
+                    <span className="text-gray-600 ml-2">
+                      T:{process.remainingTime}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Completados en nivel inferior - TODOS sin recortar */}
       <div className="space-y-2">

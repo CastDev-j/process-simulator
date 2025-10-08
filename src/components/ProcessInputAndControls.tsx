@@ -22,7 +22,9 @@ export const ProcessInputAndControls: React.FC = () => {
     processes,
     currentProcess,
     readyQueue,
+    quantum,
     setAlgorithm,
+    setQuantum,
     nextStep,
     previousStep,
   } = useSchedulerStore();
@@ -52,6 +54,7 @@ export const ProcessInputAndControls: React.FC = () => {
     { value: "LIFO", label: "LIFO (Last In, First Out)" },
     { value: "SJF", label: "SJF (Shortest Job First)" },
     { value: "LJF", label: "LJF (Longest Job First)" },
+    { value: "RR_LIFO", label: "RR LIFO (Round Robin - LIFO)" },
   ];
 
   const allProcessesCompleted =
@@ -181,6 +184,23 @@ export const ProcessInputAndControls: React.FC = () => {
                   ))}
                 </select>
               </div>
+
+              {/* Quantum Control - Solo visible para RR_LIFO */}
+              {algorithm === "RR_LIFO" && (
+                <div className="flex-shrink-0">
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Quantum:
+                  </label>
+                  <input
+                    type="number"
+                    value={quantum}
+                    onChange={(e) => setQuantum(Number(e.target.value))}
+                    min={1}
+                    max={10}
+                    className="w-20 px-2 py-2 border border-gray-300 rounded text-xs text-center"
+                  />
+                </div>
+              )}
 
               <div className="text-center">
                 <div className="text-xs font-medium text-gray-700 mb-1">

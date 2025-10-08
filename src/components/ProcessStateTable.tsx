@@ -5,11 +5,14 @@ import {
   MdCheckCircle,
   MdHelp,
   MdTableChart,
+  MdBlock,
 } from "react-icons/md";
 import { useSchedulerStore } from "../store/schedulerStore";
 
 export const ProcessStateTable: React.FC = () => {
-  const { processes, currentTick } = useSchedulerStore();
+  const { processes, currentTick, algorithm } = useSchedulerStore();
+
+  const isRoundRobin = algorithm === "RR_LIFO";
 
   const getStateIcon = (state: string) => {
     switch (state) {
@@ -21,6 +24,8 @@ export const ProcessStateTable: React.FC = () => {
         return <MdPlayArrow size={16} />;
       case "completed":
         return <MdCheckCircle size={16} />;
+      case "blocked":
+        return <MdBlock size={16} />;
       default:
         return <MdHelp size={16} />;
     }
@@ -36,6 +41,8 @@ export const ProcessStateTable: React.FC = () => {
         return "bg-green-100 text-green-800";
       case "completed":
         return "bg-gray-100 text-gray-800";
+      case "blocked":
+        return "bg-red-100 text-red-800";
       default:
         return "bg-red-100 text-red-800";
     }
@@ -51,6 +58,8 @@ export const ProcessStateTable: React.FC = () => {
         return "Ejecutando";
       case "completed":
         return "Completado";
+      case "blocked":
+        return "Bloqueado";
       default:
         return "Desconocido";
     }
@@ -104,6 +113,11 @@ export const ProcessStateTable: React.FC = () => {
               <th className="text-left p-2 font-medium text-gray-900">
                 Restante
               </th>
+              {isRoundRobin && (
+                <th className="text-left p-2 font-medium text-gray-900">
+                  Quantum
+                </th>
+              )}
               <th className="text-left p-2 font-medium text-gray-900">
                 Progreso
               </th>
@@ -135,6 +149,15 @@ export const ProcessStateTable: React.FC = () => {
                   <td className="p-2">{process.arrivalTime}</td>
                   <td className="p-2">{process.duration}</td>
                   <td className="p-2">{process.remainingTime}</td>
+                  {isRoundRobin && (
+                    <td className="p-2">
+                      {process.state === "running" ||
+                      process.state === "ready" ||
+                      process.state === "blocked"
+                        ? process.quantumRemaining ?? "-"
+                        : "-"}
+                    </td>
+                  )}
                   <td className="p-2">
                     <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
                       <div
@@ -143,6 +166,8 @@ export const ProcessStateTable: React.FC = () => {
                             ? "bg-green-500"
                             : process.state === "running"
                             ? "bg-blue-500"
+                            : process.state === "blocked"
+                            ? "bg-red-500"
                             : "bg-gray-400"
                         }`}
                         style={{ width: `${progressClamped}%` }}
