@@ -10,7 +10,7 @@ export interface Process {
   waitingTime?: number;
   turnaroundTime?: number;
   state: "waiting" | "ready" | "running" | "completed" | "blocked";
-  quantumRemaining?: number; // Para Round Robin
+  quantumRemaining?: number;
 }
 
 export type SchedulingAlgorithm = "FIFO" | "LIFO" | "SJF" | "LJF" | "RR_LIFO";
@@ -30,9 +30,9 @@ interface SchedulerState {
   currentProcess: Process | null;
   readyQueue: Process[];
   completedProcesses: Process[];
-  blockedProcesses: Process[]; // Nueva cola de bloqueados
+  blockedProcesses: Process[];
   algorithm: SchedulingAlgorithm;
-  quantum: number; // Quantum para Round Robin
+  quantum: number;
   history: StateSnapshot[];
 
   setAlgorithm: (algorithm: SchedulingAlgorithm) => void;
@@ -71,7 +71,7 @@ const sortQueue = (
       a.arrivalTime - b.arrivalTime ||
       a.pid - b.pid,
     RR_LIFO: (a: Process, b: Process) =>
-      b.arrivalTime - a.arrivalTime || b.pid - a.pid, // LIFO para Round Robin
+      b.arrivalTime - a.arrivalTime || b.pid - a.pid,
   };
 
   return sorted.sort(sorters[algorithm]);
@@ -95,7 +95,7 @@ const initialState = {
   completedProcesses: [],
   blockedProcesses: [],
   algorithm: "FIFO" as SchedulingAlgorithm,
-  quantum: 3, // Quantum por defecto para Round Robin
+  quantum: 3,
   history: [],
 };
 
@@ -156,7 +156,7 @@ export const useSchedulerStore = create<SchedulerState>((set, get) => ({
       .map((line, index) => {
         const [pid, arrivalTime, duration] = line
           .trim()
-          .split(/[\s,]+/) // " "-","
+          .split(/[\s,]+/)
           .filter((part) => part.trim())
           .map(Number);
 
@@ -184,7 +184,6 @@ export const useSchedulerStore = create<SchedulerState>((set, get) => ({
       return;
     }
 
-    // Guardar estado actual en historial
     const snapshot: StateSnapshot = {
       processes: state.processes.map((p) => ({ ...p })),
       currentTick: state.currentTick,
@@ -205,11 +204,10 @@ export const useSchedulerStore = create<SchedulerState>((set, get) => ({
 
     const isRoundRobin = state.algorithm === "RR_LIFO";
 
-    // Procesar proceso actual
+    // --- INICIO PROCESAMIENTO DEL PROCESO ACTUAL ---
     if (currentProcess) {
       currentProcess.remainingTime--;
 
-      // Decrementar quantum si es Round Robin
       if (isRoundRobin && currentProcess.quantumRemaining !== undefined) {
         currentProcess.quantumRemaining--;
       }
@@ -221,7 +219,6 @@ export const useSchedulerStore = create<SchedulerState>((set, get) => ({
         processes[processIndex] = { ...currentProcess };
       }
 
-      // Verificar si el proceso terminó
       if (currentProcess.remainingTime <= 0) {
         currentProcess.completionTime = newTick;
         currentProcess.turnaroundTime = newTick - currentProcess.arrivalTime;
@@ -238,18 +235,14 @@ export const useSchedulerStore = create<SchedulerState>((set, get) => ({
         }
 
         currentProcess = null;
-      }
-      // Verificar si el quantum se agotó (solo para RR)
-      else if (isRoundRobin && currentProcess.quantumRemaining === 0) {
-        // Mover proceso a bloqueados cuando se agota el quantum
+      } else if (isRoundRobin && currentProcess.quantumRemaining === 0) {
         currentProcess.state = "blocked";
-        currentProcess.quantumRemaining = state.quantum; // Resetear quantum para cuando se desbloquee
+        currentProcess.quantumRemaining = state.quantum;
 
         if (processIndex !== -1) {
           processes[processIndex] = { ...currentProcess };
         }
 
-        // Agregar a la lista de bloqueados
         if (!blockedProcesses.find((p) => p.pid === currentProcess!.pid)) {
           blockedProcesses.push({ ...currentProcess });
         }
@@ -257,8 +250,8 @@ export const useSchedulerStore = create<SchedulerState>((set, get) => ({
         currentProcess = null;
       }
     }
+    // --- FIN PROCESAMIENTO DEL PROCESO ACTUAL ---
 
-    // Construir cola de listos (sin incluir bloqueados)
     processes.forEach((process) => {
       const hasArrived = process.arrivalTime <= newTick;
       const isNotCompleted = process.state !== "completed";
@@ -269,12 +262,10 @@ export const useSchedulerStore = create<SchedulerState>((set, get) => ({
       if (hasArrived && isNotCompleted && isNotRunning && isNotBlocked) {
         const readyProcess = { ...process, state: "ready" as const };
 
-        // Inicializar quantum si es Round Robin y no tiene
         if (isRoundRobin && readyProcess.quantumRemaining === undefined) {
           readyProcess.quantumRemaining = state.quantum;
         }
 
-        // Solo agregar si no está ya en la cola
         if (!readyQueue.find((p) => p.pid === process.pid)) {
           readyQueue.push(readyProcess);
         }
@@ -297,22 +288,25 @@ export const useSchedulerStore = create<SchedulerState>((set, get) => ({
       ) {
         const index = processes.findIndex((p) => p.pid === process.pid);
         if (index !== -1) processes[index].state = "waiting";
+      } else if (process.state === "blocked" && isNotRunning) {
+        if (!blockedProcesses.find((p) => p.pid === process.pid)) {
+          blockedProcesses.push({ ...process });
+        }
       }
     });
 
-    // Ordenar cola de listos
     readyQueue = sortQueue(readyQueue, state.algorithm);
 
-    // Si la cola de listos está vacía y hay bloqueados, desbloquearlos
     if (
       readyQueue.length === 0 &&
       blockedProcesses.length > 0 &&
       !currentProcess
     ) {
-      // Desbloquear todos los procesos bloqueados y moverlos a ready
+      const unblockedProcesses: Process[] = [];
+
       blockedProcesses.forEach((blockedProc) => {
         const unblocked = { ...blockedProc, state: "ready" as const };
-        readyQueue.push(unblocked);
+        unblockedProcesses.push(unblocked);
 
         const index = processes.findIndex((p) => p.pid === blockedProc.pid);
         if (index !== -1) {
@@ -320,19 +314,20 @@ export const useSchedulerStore = create<SchedulerState>((set, get) => ({
         }
       });
 
-      // Limpiar la lista de bloqueados
-      blockedProcesses = [];
+      if (isRoundRobin) {
+        readyQueue = unblockedProcesses.reverse();
+      } else {
+        readyQueue = [...readyQueue, ...unblockedProcesses];
+        readyQueue = sortQueue(readyQueue, state.algorithm);
+      }
 
-      // Reordenar la cola con los procesos desbloqueados
-      readyQueue = sortQueue(readyQueue, state.algorithm);
+      blockedProcesses = [];
     }
 
-    // Asignar nuevo proceso si no hay uno ejecutando
     if (!currentProcess && readyQueue.length > 0) {
       currentProcess = { ...readyQueue[0], state: "running" };
       currentProcess.startTime = currentProcess.startTime || newTick;
 
-      // Asegurar que tiene quantum si es Round Robin
       if (isRoundRobin && currentProcess.quantumRemaining === undefined) {
         currentProcess.quantumRemaining = state.quantum;
       }
