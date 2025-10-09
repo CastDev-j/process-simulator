@@ -122,7 +122,7 @@ export const SimulationDisplay: React.FC = () => {
         </div>
       </div>
 
-      {/* Bloqueados - Visible si es RR_LIFO (siempre) o si hay procesos bloqueados */}
+      {/* Bloqueados*/}
       {(isRoundRobin || blockedProcesses.length > 0) && (
         <div className="mb-4">
           <div className="space-y-2">
@@ -165,7 +165,7 @@ export const SimulationDisplay: React.FC = () => {
         </div>
       )}
 
-      {/* Completados en nivel inferior - TODOS sin recortar */}
+      {/* Completados en nivel inferior */}
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <MdCheckCircle className="text-gray-600" size={16} />

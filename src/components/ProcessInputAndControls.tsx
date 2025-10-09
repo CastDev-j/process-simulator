@@ -31,6 +31,9 @@ export const ProcessInputAndControls: React.FC = () => {
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    console.log(file);
+    console.log(event.target.files);
+
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -39,6 +42,8 @@ export const ProcessInputAndControls: React.FC = () => {
       };
       reader.readAsText(file);
     }
+
+    event.target.value = "";
   };
 
   const handleTextSubmit = () => {
